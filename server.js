@@ -75,7 +75,7 @@ app.post("/api/reminders", function (req, res) {
   res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
 })
 
-var server = app.listen(80, function () {
+var server = app.listen(443, function () {
   var host = server.address().address
   var port = server.address().port
   console.log("Example app listening at http://%s:%s", host, port)
