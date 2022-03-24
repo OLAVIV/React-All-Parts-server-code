@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Reminder BackEnd",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OLAVIV/React-All-Parts.git"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Olavi Kurki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OLAVIV/React-All-Parts/issues"
+  },
+  "homepage": "https://github.com/OLAVIV/React-All-Parts#readme",
+  "dependencies": {
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": "16.11.0"
+  }
+}
