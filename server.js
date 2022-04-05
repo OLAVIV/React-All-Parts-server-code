@@ -77,7 +77,7 @@ app.get("/api/reminders/", function (req, res) {
       .toArray((err, result) => {
         data = result
         console.log(result)
-        db.close();
+        client.close();
       })
   });
   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
@@ -109,7 +109,7 @@ app.post("/api/reminders", function (req, res) {
         if (!err) {
           found = true
         }
-        db.close();
+        client.close();
       })
   });
   if (found) {
@@ -123,6 +123,7 @@ app.post("/api/reminders", function (req, res) {
     db.collection('Reminder').insertOne(
       newReminder
     );
+    client.close();
   });
   res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
 })
