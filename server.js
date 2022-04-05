@@ -82,6 +82,7 @@ app.get("/api/reminders/", function (req, res) {
       .find()
       .toArray((err, result) => {
         data = result
+        console.log(result)
         db.close();
       })
   });
