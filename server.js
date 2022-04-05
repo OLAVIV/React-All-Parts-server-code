@@ -77,7 +77,6 @@ app.get("/api/reminders/", function (req, res) {
       .toArray((err, result) => {
         data = result
         console.log(result)
-        // client.close();
       })
   });
   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
@@ -109,7 +108,6 @@ app.post("/api/reminders", function (req, res) {
         if (!err) {
           found = true
         }
-        client.close();
       })
   });
   if (found) {
