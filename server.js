@@ -68,12 +68,6 @@ app.delete("/api/reminders/:id", function (req, res) {
   res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send({});
 })
 
-// app.get("/api/reminders/", function (req, res) {
-//   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-//   res.write(JSON.stringify(data));
-//   res.end();
-// })
-
 app.get("/api/reminders/", function (req, res) {
   var data = []
   MongoClient.connect(dbConnection, function (err, client) {
@@ -102,13 +96,34 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
-  if (data.reminders.find(r => r.name == req.body.name)) {
+  // if (data.reminders.find(r => r.name == req.body.name)) {
+  //   res.status(400).send("Same reminder already exists!");
+  //   return
+  // }
+  var found = false
+  MongoClient.connect(dbConnection, function (err, client) {
+    var db = client.db('Reminders');
+    db.collection('Reminder')
+      .findOne({ name: req.body.name })
+      .toArray((err, result) => {
+        if (!err) {
+          found = true
+        }
+        db.close();
+      })
+  });
+  if (found) {
     res.status(400).send("Same reminder already exists!");
     return
   }
   let newId = Math.trunc(Math.random() * 1000000)
-  let newReminder = { id: newId, name: req.body.name, timestamp: req.body.timestamp }
-  data.reminders.push(newReminder)
+  let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
+  MongoClient.connect(url, function (err, client) {
+    var db = client.db('Reminders');
+    db.collection('Reminder').insertOne(
+      newReminder
+    );
+  });
   res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
 })
 
