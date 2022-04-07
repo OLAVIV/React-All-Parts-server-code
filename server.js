@@ -68,6 +68,7 @@ app.post("/api/reminders", function (req, res) {
     let newId = Math.trunc(Math.random() * 1000000)
     let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
     MongoClient.connect(dbConnection, function (err, client) {
+      console.log("toimi")
       var db = client.db('Reminders');
       db.collection('Reminder').insertOne(
         newReminder
