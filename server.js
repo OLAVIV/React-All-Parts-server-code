@@ -15,7 +15,8 @@ app.delete("/api/reminders/:id", function (req, res) {
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
-      .find({ _id: reminderId }).toArray(err, reminder => {
+      .find({ _id: reminderId })
+      .toArray((err, reminder) => {
         console.log(err)
         console.log(reminder)
         if (!reminder) {
