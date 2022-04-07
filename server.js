@@ -78,15 +78,15 @@ app.get("/api/reminders/", function (req, res) {
         data = result
         console.log("result", result)
         client.close();
+        res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        console.log("data", data)
+        var reminders = {
+          reminders: data
+        }
+        res.write(JSON.stringify(reminders));
+        res.end();
       })
   });
-  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-  console.log("data", data)
-  var reminders = {
-    reminders: data
-  }
-  res.write(JSON.stringify(reminders));
-  res.end();
 })
 
 
