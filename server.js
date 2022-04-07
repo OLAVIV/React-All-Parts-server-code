@@ -55,16 +55,17 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
-  var found = false
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name })
+    client.close()
+    if (reminder) {
+      res.status(400).send("Same reminder already exists!");
+      return
+    }
   });
-  if (found) {
-    res.status(400).send("Same reminder already exists!");
-    return
-  }
+
   let newId = Math.trunc(Math.random() * 1000000)
   let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
   MongoClient.connect(dbConnection, function (err, client) {
