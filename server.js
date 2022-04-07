@@ -59,21 +59,21 @@ app.post("/api/reminders", function (req, res) {
     var db = client.db('Reminders');
     var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name }, reminder => {
-    if (reminder) {
-      console.log(reminder)
-      res.status(400).send("Same reminder already exists!");
-      return
-    }
+        console.log(reminder)
+        if (reminder) {
+          res.status(400).send("Same reminder already exists!");
+          return
+        }
 
-    let newId = Math.trunc(Math.random() * 1000000)
-    let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
-      console.log("toimi")
-      var db = client.db('Reminders');
-      db.collection('Reminder').insertOne(
-        newReminder
-      );
-      client.close();
-    res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+        let newId = Math.trunc(Math.random() * 1000000)
+        let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
+        console.log("toimi")
+        var db = client.db('Reminders');
+        db.collection('Reminder').insertOne(
+          newReminder
+        );
+        client.close();
+        res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
       })
   })
 });
