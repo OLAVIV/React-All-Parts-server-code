@@ -76,12 +76,12 @@ app.get("/api/reminders/", function (req, res) {
       .find()
       .toArray((err, result) => {
         data = result
-        console.log(result)
+        console.log("result", result)
         client.close();
       })
   });
   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-  console.log(data)
+  console.log("data", data)
   var reminders = {
     reminders: data
   }
