@@ -9,6 +9,7 @@ app.use(express.json())
 app.use(cors())
 
 app.delete("/api/reminders/:id", function (req, res) {
+  console.log(req.params)
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
@@ -16,6 +17,7 @@ app.delete("/api/reminders/:id", function (req, res) {
         console.log(reminder)
         if (!reminder) {
           res.status(406).send("Reminder doesn't exist!");
+          client.close();
           return
         }
         db.collection('Reminder').deleteOne({ _id: req.params.id }, result => {
