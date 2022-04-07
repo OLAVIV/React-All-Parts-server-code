@@ -5,46 +5,8 @@ var fs = require("fs");
 var MongoClient = require('mongodb').MongoClient;
 var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mongodb.net/Reminders?retryWrites=true&w=majority';
 
-// let data = {
-//   "reminders": [
-//     {
-//       "name": "Buy some eggs",
-//       "timestamp": "2021-11-10T13:00:00.141Z",
-//       "id": 1
-//     },
-//     {
-//       "name": "Make an omelette",
-//       "timestamp": "2021-11-11T08:00:00.141Z",
-//       "id": 2
-//     },
-//     {
-//       "name": "Wash dishes",
-//       "timestamp": "2021-11-11T09:00:00.000Z",
-//       "id": 3
-//     },
-//     {
-//       "name": "Buy more eggs",
-//       "timestamp": "2021-11-11T13:00:00.000Z",
-//       "id": 4
-//     }
-//   ]
-// }
-
 app.use(express.json())
 app.use(cors())
-
-// app.get("/api/reminders/:id", function (req, res) {
-//   const reminder = data.reminders.find(r => r.id == req.params.id)
-//   if (!reminder) {
-//     res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-//     res.end();
-//     return
-//   }
-//   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-//   res.write(JSON.stringify(reminder));
-//   res.end();
-// })
-
 
 app.get("/api/reminders/:id", function (req, res) {
   const reminder = data.reminders.find(r => r.id == req.params.id)
@@ -98,11 +60,10 @@ app.post("/api/reminders", function (req, res) {
     var db = client.db('Reminders');
     db.collection('Reminder')
       .findOne({ name: req.body.name })
-      .toArray((err, result) => {
-        if (!err) {
+      .then(result => {
           found = true
-        }
       })
+      .catch(err => console.error(`Failed to find document: ${err}`));
   });
   if (found) {
     res.status(400).send("Same reminder already exists!");
