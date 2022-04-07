@@ -11,6 +11,7 @@ app.use(cors())
 app.delete("/api/reminders/:id", function (req, res) {
   console.log(req.params)
   var reminderId = parseInt(req.params.id, 0)
+  console.log(reminderId)
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
