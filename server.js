@@ -59,7 +59,7 @@ app.get("/api/reminders/:id", function (req, res) {
 })
 
 app.delete("/api/reminders/:id", function (req, res) {
-  const reminder = data.reminders.find(r => r.id == req.params.id)
+  const reminder = data.reminders.find(r => r._id == req.params.id)
   if (!reminder) {
     res.status(404).send("Not Found");
     return
@@ -78,6 +78,7 @@ app.get("/api/reminders/", function (req, res) {
         data = result
         console.log(result)
       })
+      client.close();
   });
   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
   var reminders = {
