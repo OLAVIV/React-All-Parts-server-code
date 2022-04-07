@@ -8,17 +8,17 @@ var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mo
 app.use(express.json())
 app.use(cors())
 
-app.get("/api/reminders/:id", function (req, res) {
-  const reminder = data.reminders.find(r => r.id == req.params.id)
-  if (!reminder) {
-    res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-    res.end();
-    return
-  }
-  res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-  res.write(JSON.stringify(reminder));
-  res.end();
-})
+// app.get("/api/reminders/:id", function (req, res) {
+//   const reminder = data.reminders.find(r => r.id == req.params.id)
+//   if (!reminder) {
+//     res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+//     res.end();
+//     return
+//   }
+//   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+//   res.write(JSON.stringify(reminder));
+//   res.end();
+// })
 
 app.delete("/api/reminders/:id", function (req, res) {
   const reminder = data.reminders.find(r => r._id == req.params.id)
@@ -46,8 +46,6 @@ app.get("/api/reminders/", function (req, res) {
       })
   });
 })
-
-
 
 app.post("/api/reminders", function (req, res) {
   console.log(req.body.name + " " + req.body.timestamp)
