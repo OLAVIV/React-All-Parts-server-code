@@ -67,11 +67,10 @@ app.post("/api/reminders", function (req, res) {
 
         let newId = Math.trunc(Math.random() * 1000000)
         let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
-        db.collection('Reminder').insertOne(
-          newReminder
-        );
-        client.close();
-        res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+        db.collection('Reminder').insertOne(newReminder, result => {
+          client.close();
+          res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+        });
       })
   })
 });
