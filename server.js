@@ -15,14 +15,14 @@ app.delete("/api/reminders/:id", function (req, res) {
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
-      .findOne({ _id: ObjectId(req.params.id) }, reminder => {
+      .findOne({ _id: `ObjectId('${req.params.id}')` }, reminder => {
         console.log(reminder)
         if (!reminder) {
           res.status(406).send("Reminder doesn't exist!");
           client.close();
           return
         }
-        db.collection('Reminder').deleteOne({ _id: ObjectId(req.params.id) }, result => {
+        db.collection('Reminder').deleteOne({ _id: `ObjectId('${req.params.id}')` }, result => {
           client.close();
           res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
         });
