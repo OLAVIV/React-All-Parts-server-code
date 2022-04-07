@@ -8,26 +8,22 @@ var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mo
 app.use(express.json())
 app.use(cors())
 
-// app.get("/api/reminders/:id", function (req, res) {
-//   const reminder = data.reminders.find(r => r.id == req.params.id)
-//   if (!reminder) {
-//     res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-//     res.end();
-//     return
-//   }
-//   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-//   res.write(JSON.stringify(reminder));
-//   res.end();
-// })
-
 app.delete("/api/reminders/:id", function (req, res) {
-  const reminder = data.reminders.find(r => r._id == req.params.id)
-  if (!reminder) {
-    res.status(404).send("Not Found");
-    return
-  }
-  data = { reminders: data.reminders.filter(r => r.id != req.params.id) }
-  res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send({});
+  MongoClient.connect(dbConnection, function (err, client) {
+    var db = client.db('Reminders');
+    db.collection('Reminder')
+      .findOne({ _id: req.params.id }, reminder => {
+        console.log(reminder)
+        if (!reminder) {
+          res.status(406).send("Reminder doesn't exist!");
+          return
+        }
+        db.collection('Reminder').deleteOne({ _id: req.params.id }, result => {
+          client.close();
+          res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+        });
+      })
+  })
 })
 
 app.get("/api/reminders/", function (req, res) {
