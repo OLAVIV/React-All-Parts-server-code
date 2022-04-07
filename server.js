@@ -71,7 +71,6 @@ app.delete("/api/reminders/:id", function (req, res) {
 app.get("/api/reminders/", function (req, res) {
   var data = []
   MongoClient.connect(dbConnection, function (err, client) {
-    console.log(err)
     var db = client.db('Reminders');
     db.collection('Reminder')
       .find()
@@ -82,6 +81,7 @@ app.get("/api/reminders/", function (req, res) {
       })
   });
   res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  console.log(data)
   var reminders = {
     reminders: data
   }
@@ -97,10 +97,6 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
-  // if (data.reminders.find(r => r.name == req.body.name)) {
-  //   res.status(400).send("Same reminder already exists!");
-  //   return
-  // }
   var found = false
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
