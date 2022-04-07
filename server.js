@@ -60,6 +60,7 @@ app.post("/api/reminders", function (req, res) {
     var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name })
     if (reminder) {
+      console.log(reminder)
       res.status(400).send("Same reminder already exists!");
       return
     }
