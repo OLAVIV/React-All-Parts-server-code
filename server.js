@@ -55,7 +55,7 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
-  MongoClient.connect(dbConnection, function (err, client) {
+ await MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name })
