@@ -71,6 +71,7 @@ app.delete("/api/reminders/:id", function (req, res) {
 app.get("/api/reminders/", function (req, res) {
   var data = []
   MongoClient.connect(dbConnection, function (err, client) {
+    console.log(err)
     var db = client.db('Reminders');
     db.collection('Reminder')
       .find()
