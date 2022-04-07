@@ -26,7 +26,9 @@ app.delete("/api/reminders/:id", function (req, res) {
         }
         db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
           client.close();
-          res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+          res.status(200)
+            .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+            .send(JSON.stringify(reminder));
         });
       })
   })
