@@ -58,7 +58,7 @@ app.post("/api/reminders", function (req, res) {
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     var reminder = db.collection('Reminder')
-      .findOne({ name: req.body.name })
+      .findOne({ name: req.body.name }, reminder => {
     if (reminder) {
       console.log(reminder)
       res.status(400).send("Same reminder already exists!");
@@ -74,6 +74,7 @@ app.post("/api/reminders", function (req, res) {
       );
       client.close();
     res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+      })
   })
 });
 
