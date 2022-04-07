@@ -58,12 +58,8 @@ app.post("/api/reminders", function (req, res) {
   var found = false
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
-    db.collection('Reminder')
+    var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name })
-      .then(result => {
-          found = true
-      })
-      .catch(err => console.error(`Failed to find document: ${err}`));
   });
   if (found) {
     res.status(400).send("Same reminder already exists!");
