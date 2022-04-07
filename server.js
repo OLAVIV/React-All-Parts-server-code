@@ -69,19 +69,15 @@ app.delete("/api/reminders/:id", function (req, res) {
 })
 
 app.get("/api/reminders/", function (req, res) {
-  var data = []
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
       .find()
       .toArray((err, result) => {
-        data = result
-        console.log("result", result)
         client.close();
         res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-        console.log("data", data)
         var reminders = {
-          reminders: data
+          reminders: result
         }
         res.write(JSON.stringify(reminders));
         res.end();
