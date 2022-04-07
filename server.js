@@ -55,7 +55,7 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
- await MongoClient.connect(dbConnection, function (err, client) {
+  MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     var reminder = db.collection('Reminder')
       .findOne({ name: req.body.name })
@@ -64,19 +64,21 @@ app.post("/api/reminders", function (req, res) {
       res.status(400).send("Same reminder already exists!");
       return
     }
-  });
 
-  let newId = Math.trunc(Math.random() * 1000000)
-  let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
-  MongoClient.connect(dbConnection, function (err, client) {
-    var db = client.db('Reminders');
-    db.collection('Reminder').insertOne(
-      newReminder
-    );
-    client.close();
-  });
-  res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
-})
+    let newId = Math.trunc(Math.random() * 1000000)
+    let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
+    MongoClient.connect(dbConnection, function (err, client) {
+      var db = client.db('Reminders');
+      db.collection('Reminder').insertOne(
+        newReminder
+      );
+      client.close();
+    });
+    res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+  })
+});
+
+
 
 var server = app.listen(process.env.PORT || 4000, function () {
   var host = server.address().address
