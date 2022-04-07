@@ -15,7 +15,7 @@ app.delete("/api/reminders/:id", function (req, res) {
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
-      .findOne({ _id: reminderId }, reminder => {
+      .find({ _id: reminderId }, reminder => {
         console.log(reminder)
         if (!reminder) {
           res.status(406).send("Reminder doesn't exist!");
