@@ -57,7 +57,7 @@ app.post("/api/reminders", function (req, res) {
   }
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
-    var reminder = db.collection('Reminder')
+    db.collection('Reminder')
       .findOne({ name: req.body.name }, reminder => {
         console.log(reminder)
         if (reminder) {
@@ -67,8 +67,6 @@ app.post("/api/reminders", function (req, res) {
 
         let newId = Math.trunc(Math.random() * 1000000)
         let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
-        console.log("toimi")
-        var db = client.db('Reminders');
         db.collection('Reminder').insertOne(
           newReminder
         );
