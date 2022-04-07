@@ -10,17 +10,18 @@ app.use(cors())
 
 app.delete("/api/reminders/:id", function (req, res) {
   console.log(req.params)
+  var reminderId = parseInt(req.params.id, 0)
   MongoClient.connect(dbConnection, function (err, client) {
     var db = client.db('Reminders');
     db.collection('Reminder')
-      .findOne({ _id: req.params.id }, reminder => {
+      .findOne({ _id: reminderId }, reminder => {
         console.log(reminder)
         if (!reminder) {
           res.status(406).send("Reminder doesn't exist!");
           client.close();
           return
         }
-        db.collection('Reminder').deleteOne({ _id: req.params.id }, result => {
+        db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
           client.close();
           res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
         });
@@ -58,6 +59,7 @@ app.post("/api/reminders", function (req, res) {
         console.log(reminder)
         if (reminder) {
           res.status(400).send("Same reminder already exists!");
+          client.close();
           return
         }
 
