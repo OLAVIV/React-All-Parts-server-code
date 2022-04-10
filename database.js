@@ -6,7 +6,7 @@ class Database {
     static deleteReminder(reminderId) {
         var result = false
         MongoClient.connect(dbConnection)
-            .then(result => {
+            .then(client => {
                 var db = client.db('Reminders');
                 db.collection('Reminder')
                     .find({ _id: reminderId })
