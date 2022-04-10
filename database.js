@@ -3,7 +3,7 @@ var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mo
 
 
 class Database {
-    static DeleteReminder(reminderId) {
+    static deleteReminder(reminderId) {
         var result = false
         MongoClient.connect(dbConnection, function (err, client) {
             var db = client.db('Reminders');
