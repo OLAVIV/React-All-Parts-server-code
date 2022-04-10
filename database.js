@@ -4,6 +4,7 @@ var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mo
 
 class Database {
     static DeleteReminder(reminderId) {
+        var result = false
         MongoClient.connect(dbConnection, function (err, client) {
             var db = client.db('Reminders');
             db.collection('Reminder')
@@ -13,14 +14,16 @@ class Database {
                     console.log(reminder)
                     if (!reminder) {
                         client.close();
-                        return false
+                        return
                     }
                     db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
                         client.close();
-                        return true
+                        result = true
+                        return
                     });
                 })
         })
+        console.log("result", result)
     }
 }
 
