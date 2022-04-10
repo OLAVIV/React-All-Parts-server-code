@@ -1,4 +1,5 @@
 var express = require('express');
+var database = require('database')
 var cors = require('cors')
 var app = express();
 var fs = require("fs");
@@ -12,26 +13,33 @@ app.delete("/api/reminders/:id", function (req, res) {
   console.log(req.params)
   var reminderId = parseInt(req.params.id, 0)
   console.log(reminderId)
-  MongoClient.connect(dbConnection, function (err, client) {
-    var db = client.db('Reminders');
-    db.collection('Reminder')
-      .find({ _id: reminderId })
-      .toArray((err, reminder) => {
-        console.log(err)
-        console.log(reminder)
-        if (!reminder) {
-          res.status(406).send("Reminder doesn't exist!");
-          client.close();
-          return
-        }
-        db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
-          client.close();
-          res.status(200)
-            .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
-            .send(JSON.stringify(reminder));
-        });
-      })
-  })
+  if (database.deleteReminder(reminderId) == true) {
+    res.status(200)
+      .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+      .send(JSON.stringify(reminder));
+  } else {
+    res.status(406).send("Reminder doesn't exist!");
+  }
+  // MongoClient.connect(dbConnection, function (err, client) {
+  //   var db = client.db('Reminders');
+  //   db.collection('Reminder')
+  //     .find({ _id: reminderId })
+  //     .toArray((err, reminder) => {
+  //       console.log(err)
+  //       console.log(reminder)
+  //       if (!reminder) {
+  // res.status(406).send("Reminder doesn't exist!");
+  //         client.close();
+  //         return
+  //       }
+  //       db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
+  //         client.close();
+  // res.status(200)
+  //   .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+  //   .send(JSON.stringify(reminder));
+  //       });
+  //     })
+  // })
 })
 
 app.get("/api/reminders/", function (req, res) {
