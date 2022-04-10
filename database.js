@@ -10,8 +10,8 @@ class Database {
             db.collection('Reminder')
                 .find({ _id: reminderId })
                 .toArray((err, reminder) => {
-                    console.log(err)
-                    console.log(reminder)
+                    console.log("err", err)
+                    console.log("reminder", reminder)
                     if (!reminder) {
                         client.close();
                         return
@@ -19,6 +19,7 @@ class Database {
                     db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
                         client.close();
                         result = true
+                        console.log("delete one result", result)
                         return
                     });
                 })
