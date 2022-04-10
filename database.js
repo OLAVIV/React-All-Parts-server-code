@@ -25,8 +25,10 @@ class Database {
                         });
                     })
             })
-        console.log("result", result)
-        return result
+            .then(() => {
+                console.log("result", result)
+                return result
+            })
     }
 }
 
