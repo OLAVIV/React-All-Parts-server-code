@@ -1,11 +1,12 @@
 var express = require('express');
-var database = require('database')
 var cors = require('cors')
-var app = express();
 var fs = require("fs");
 var MongoClient = require('mongodb').MongoClient;
 var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mongodb.net/Reminders?retryWrites=true&w=majority';
+// import database from "./database"
+var database = require('./database')
 
+var app = express();
 app.use(express.json())
 app.use(cors())
 
