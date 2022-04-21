@@ -45,6 +45,26 @@ class Database {
                 })
         })
     }
+
+    static getReminders(succeeded, failed) {
+        MongoClient.connect(dbConnection, function (err, client) {
+            var db = client.db('Reminders');
+            db.collection('Reminder')
+                .find()
+                .toArray((err, result) => {
+                    client.close();
+                    if (err) {
+                        failed(err)
+                    } else {
+                        var reminders = {
+                            reminders: result
+                        }
+                        succeeded(reminders)
+                    }
+                })
+        });
+    }
+
 }
 
 module.exports = Database

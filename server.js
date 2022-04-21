@@ -25,20 +25,31 @@ app.delete("/api/reminders/:id", function (req, res) {
 })
 
 app.get("/api/reminders/", function (req, res) {
-  MongoClient.connect(dbConnection, function (err, client) {
-    var db = client.db('Reminders');
-    db.collection('Reminder')
-      .find()
-      .toArray((err, result) => {
-        client.close();
-        res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-        var reminders = {
-          reminders: result
-        }
-        res.write(JSON.stringify(reminders));
-        res.end();
-      })
-  });
+  database.getReminders(
+    (response) => {
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.write(JSON.stringify(response));
+      res.end();
+    },
+    (errorMessage) => {
+      res.status(400)
+        .send(errorMessage);
+    })
+
+  // MongoClient.connect(dbConnection, function (err, client) {
+  //   var db = client.db('Reminders');
+  //   db.collection('Reminder')
+  //     .find()
+  //     .toArray((err, result) => {
+  //       client.close();
+  //       res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+  //       var reminders = {
+  //         reminders: result
+  //       }
+  //       res.write(JSON.stringify(reminders));
+  //       res.end();
+  //     })
+  // });
 })
 
 app.post("/api/reminders", function (req, res) {
@@ -55,7 +66,7 @@ app.post("/api/reminders", function (req, res) {
     },
     (errorMessage) => {
       res.status(400)
-      .send(errorMessage);
+        .send(errorMessage);
     }
   )
   //   MongoClient.connect(dbConnection, function (err, client) {
