@@ -4,31 +4,24 @@ var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mo
 
 class Database {
     static deleteReminder(reminderId, succeeded, failed) {
-        MongoClient.connect(dbConnection)
-            .then(client => {
-                var db = client.db('Reminders');
-                db.collection('Reminder')
-                    .find({ _id: reminderId })
-                    .toArray()
-                    .then(reminder => {
-                        console.log("reminder", reminder)
-                        if (!reminder) {
-                            client.close();
-                            failed()
-                            return false
-                        }
-                        db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
-                            client.close();
-                            succeeded();
-                            console.log("delete one result", result)
-                            return true
-                        });
-                    })
-            })
-            .then(() => {
-                console.log("result", result)
-                return result
-            })
+        MongoClient.connect(dbConnection, function (err, client) {
+            var db = client.db('Reminders');
+            db.collection('Reminder')
+                .find({ _id: reminderId })
+                .toArray((err, reminder) => {
+                    console.log(err)
+                    console.log(reminder)
+                    if (!reminder) {
+                        client.close();
+                        succeeded()
+                        return
+                    }
+                    db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
+                        client.close();
+                        failed()
+                    });
+                })
+        })
     }
 }
 
