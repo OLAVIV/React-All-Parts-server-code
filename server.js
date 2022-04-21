@@ -14,7 +14,7 @@ app.delete("/api/reminders/:id", function (req, res) {
   var reminderId = parseInt(req.params.id, 0)
   console.log(reminderId)
   database.deleteReminder(reminderId,
-    () => {
+    (reminder) => {
       res.status(200)
         .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
         .send(JSON.stringify(reminder));
