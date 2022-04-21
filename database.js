@@ -14,6 +14,7 @@ class Database {
                         console.log("reminder", reminder)
                         if (!reminder) {
                             client.close();
+                            failed()
                             return false
                         }
                         db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
