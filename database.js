@@ -16,7 +16,8 @@ class Database {
                         failed()
                         return
                     }
-                    db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
+                    db.collection('Reminder')
+                      .deleteOne({ _id: reminderId }, result => {
                         client.close();
                         succeeded()
                     });
