@@ -13,13 +13,34 @@ class Database {
                     console.log(reminder)
                     if (!reminder) {
                         client.close();
-                        failed()
+                        failed("Reminder does not exist!")
                         return
                     }
                     db.collection('Reminder')
-                      .deleteOne({ _id: reminderId }, result => {
+                        .deleteOne({ _id: reminderId }, result => {
+                            client.close();
+                            succeeded(reminder)
+                        });
+                })
+        })
+    }
+
+    static addReminder(name, timestamp, succeeded, failed) {
+        MongoClient.connect(dbConnection, function (err, client) {
+            var db = client.db('Reminders');
+            db.collection('Reminder')
+                .findOne({ name: req.body.name }, reminder => {
+                    console.log(reminder)
+                    if (reminder) {
                         client.close();
-                        succeeded(reminder)
+                        failed("Same reminder already exists!");
+                        return
+                    }
+                    let newId = Math.trunc(Math.random() * 1000000)
+                    let newReminder = { _id: newId, name: name, timestamp: timestamp }
+                    db.collection('Reminder').insertOne(newReminder, result => {
+                        client.close();
+                        succeeded(newReminder);
                     });
                 })
         })

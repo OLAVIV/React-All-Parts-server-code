@@ -18,30 +18,10 @@ app.delete("/api/reminders/:id", function (req, res) {
       res.status(200)
         .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
         .send(JSON.stringify(reminder));
-    }, 
+    },
     () => {
       res.status(406).send("Reminder doesn't exist!");
     })
-  // MongoClient.connect(dbConnection, function (err, client) {
-  //   var db = client.db('Reminders');
-  //   db.collection('Reminder')
-  //     .find({ _id: reminderId })
-  //     .toArray((err, reminder) => {
-  //       console.log(err)
-  //       console.log(reminder)
-  //       if (!reminder) {
-  // res.status(406).send("Reminder doesn't exist!");
-  //         client.close();
-  //         return
-  //       }
-  //       db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
-  //         client.close();
-  // res.status(200)
-  //   .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
-  //   .send(JSON.stringify(reminder));
-  //       });
-  //     })
-  // })
 })
 
 app.get("/api/reminders/", function (req, res) {
@@ -67,25 +47,37 @@ app.post("/api/reminders", function (req, res) {
     res.status(406).send("Invalid name or timestamp");
     return
   }
-  MongoClient.connect(dbConnection, function (err, client) {
-    var db = client.db('Reminders');
-    db.collection('Reminder')
-      .findOne({ name: req.body.name }, reminder => {
-        console.log(reminder)
-        if (reminder) {
-          res.status(400).send("Same reminder already exists!");
-          client.close();
-          return
-        }
+  database.addReminder(req.body.name, req.body.timestamp,
+    (newReminder) => {
+      res.status(200)
+        .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+        .send(JSON.stringify(newReminder));
+    },
+    (errorMessage) => {
+      res.status(400)
+      .send(errorMessage);
+    }
+  )
+  //   MongoClient.connect(dbConnection, function (err, client) {
+  //     var db = client.db('Reminders');
+  //     db.collection('Reminder')
+  //       .findOne({ name: req.body.name }, reminder => {
+  //         console.log(reminder)
+  //         if (reminder) {
+  //           res.status(400).send("Same reminder already exists!");
+  //           client.close();
+  //           return
+  //         }
 
-        let newId = Math.trunc(Math.random() * 1000000)
-        let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
-        db.collection('Reminder').insertOne(newReminder, result => {
-          client.close();
-          res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
-        });
-      })
-  })
+  //         let newId = Math.trunc(Math.random() * 1000000)
+  //         let newReminder = { _id: newId, name: req.body.name, timestamp: req.body.timestamp }
+  //         db.collection('Reminder').insertOne(newReminder, result => {
+  //           client.close();
+  //           res.status(200).header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }).send(JSON.stringify(newReminder));
+  //         });
+  //       })
+  //   })
+  // 
 });
 
 
