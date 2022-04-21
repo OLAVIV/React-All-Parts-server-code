@@ -29,7 +29,7 @@ class Database {
         MongoClient.connect(dbConnection, function (err, client) {
             var db = client.db('Reminders');
             db.collection('Reminder')
-                .findOne({ name: req.body.name }, reminder => {
+                .findOne({ name: name }, reminder => {
                     console.log(reminder)
                     if (reminder) {
                         client.close();
