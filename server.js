@@ -3,7 +3,6 @@ var cors = require('cors')
 var fs = require("fs");
 var MongoClient = require('mongodb').MongoClient;
 var dbConnection = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mongodb.net/Reminders?retryWrites=true&w=majority';
-// import database from "./database"
 var database = require('./database')
 
 var app = express();
@@ -14,13 +13,15 @@ app.delete("/api/reminders/:id", function (req, res) {
   console.log(req.params)
   var reminderId = parseInt(req.params.id, 0)
   console.log(reminderId)
-  if (database.deleteReminder(reminderId) == true) {
-    res.status(200)
-      .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
-      .send(JSON.stringify(reminder));
-  } else {
-    res.status(406).send("Reminder doesn't exist!");
-  }
+  database.deleteReminder(reminderId,
+    () => {
+      res.status(200)
+        .header({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+        .send(JSON.stringify(reminder));
+    }, 
+    () => {
+      res.status(406).send("Reminder doesn't exist!");
+    })
   // MongoClient.connect(dbConnection, function (err, client) {
   //   var db = client.db('Reminders');
   //   db.collection('Reminder')
