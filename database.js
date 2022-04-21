@@ -13,12 +13,12 @@ class Database {
                     console.log(reminder)
                     if (!reminder) {
                         client.close();
-                        succeeded()
+                        failed()
                         return
                     }
                     db.collection('Reminder').deleteOne({ _id: reminderId }, result => {
                         client.close();
-                        failed()
+                        succeeded()
                     });
                 })
         })
