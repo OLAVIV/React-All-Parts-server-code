@@ -1,7 +1,7 @@
 // import { MongoClient } from 'mongodb'
 var MongoClient = require('mongodb').MongoClient;
 // var url = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-var url = 'mongodb+srv://olavikurki:2nnaVaaht9@olavisreminders.wdq1n.mongodb.net/Reminders?retryWrites=true&w=majority';
+var url = 'mongodb+srv://olavikurki:Password@olavisreminders.wdq1n.mongodb.net/Reminders?retryWrites=true&w=majority';
 console.log(process.argv)
 if (process.argv.length == 2) {
     MongoClient.connect(url, function (err, client) {
